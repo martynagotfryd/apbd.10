@@ -34,7 +34,7 @@ public class Repository : IRepository
                         Name = pm.Medicament.Name,
                         Dose = pm.Dose,
                         Description = pm.Description
-                    }).ToList(),  
+                    }).ToList(), // Ensure ToList() is called here
                     Doctors = new List<DoctorInfoDto>
                     {
                         new DoctorInfoDto
@@ -43,10 +43,35 @@ public class Repository : IRepository
                             FirstName = pr.Doctor.FirstName
                         }
                     }
-                }).ToList()  
+                }).ToList() // Ensure ToList() is called here
             })
             .FirstOrDefaultAsync();
 
         return patient;
+    }
+
+    public Task<bool> DoesPatientExist(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task AddPatient(PatientDto patientDto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> DoesDoctorExist(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> DoesMedicamentExist(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task AddPrescription(PatientDto patientDto)
+    {
+        throw new NotImplementedException();
     }
 }

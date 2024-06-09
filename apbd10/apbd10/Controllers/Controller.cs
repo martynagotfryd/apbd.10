@@ -14,7 +14,7 @@ public class Controller : ControllerBase
         _repository = repository;
     }
 
-    [HttpGet("{idPatient}")]
+    [HttpGet]
     public async Task<IActionResult> GetPatientInfo(int idPatient)
     {
         var patient = await _repository.GetPatientInfo(idPatient);
