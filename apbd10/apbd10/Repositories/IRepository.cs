@@ -9,5 +9,6 @@ public interface IRepository
     Task AddPatient(PatientDto patientDto);
     Task<bool> DoesDoctorExist(int id);
     Task<bool> DoesMedicamentExist(int id);
-    Task AddPrescription(PatientDto patientDto);
+    Task<int> AddPrescription(AddPrescriptionDto prescriptionDto);
+    Task AddMedicament_Prescription(MedicamentInfoDto medicamentInfoDto, int idPrescription);
 }

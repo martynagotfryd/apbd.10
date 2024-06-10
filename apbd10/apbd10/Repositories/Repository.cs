@@ -1,5 +1,6 @@
 using apbd10.Data;
 using apbd10.DTOs;
+using apbd10.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace apbd10.Repositories;
@@ -50,28 +51,67 @@ public class Repository : IRepository
         return patient;
     }
 
-    public Task<bool> DoesPatientExist(int id)
+    public async Task<bool> DoesPatientExist(int id)
     {
-        throw new NotImplementedException();
+        var patient = await _context.Patients.AnyAsync(p => p.Id == id);
+
+        return patient;
     }
 
-    public Task AddPatient(PatientDto patientDto)
+    public async Task AddPatient(PatientDto patientDto)
     {
-        throw new NotImplementedException();
+        var patient = new Patient()
+        {
+            FirstName = patientDto.FirstName,
+            LastName = patientDto.LastName,
+            BirthDate = patientDto.BirthDate
+        };
+        
+        await _context.Patients.AddAsync(patient);
+        await _context.SaveChangesAsync();
     }
 
-    public Task<bool> DoesDoctorExist(int id)
+    public async Task<bool> DoesDoctorExist(int id)
     {
-        throw new NotImplementedException();
+        var doctor = await _context.Doctors.AnyAsync(p => p.Id == id);
+
+        return doctor;
     }
 
-    public Task<bool> DoesMedicamentExist(int id)
+    public async Task<bool> DoesMedicamentExist(int id)
     {
-        throw new NotImplementedException();
+        var medicament = await _context.Medicaments.AnyAsync(p => p.Id == id);
+
+        return medicament;
     }
 
-    public Task AddPrescription(PatientDto patientDto)
+    public async Task<int> AddPrescription(AddPrescriptionDto prescriptionDto)
     {
-        throw new NotImplementedException();
+        var prescription = new Prescription()
+        {
+            Date = DateTime.Now,
+            DueDate = prescriptionDto.DueDate,
+            PatientId = prescriptionDto.Patient.IdPatient,
+            DoctorId = prescriptionDto.Doctor.IdDoctor
+        };
+        
+        await _context.Prescriptions.AddAsync(prescription);
+        await _context.SaveChangesAsync();
+
+        return prescription.Id;
+    }
+
+    public async Task AddMedicament_Prescription(MedicamentInfoDto medicamentInfoDto, int idPrescription)
+    {
+        var prescription_medicament = new PrescriptionMedicament()
+        {
+            MedicamentId = medicamentInfoDto.IdMedicament,
+            PrescriptionId = idPrescription,
+            Dose = medicamentInfoDto.Dose,
+            Description = medicamentInfoDto.Description
+        };
+        
+        await _context.PrescriptionMedicaments.AddAsync(prescription_medicament);
+        await _context.SaveChangesAsync();
     }
 }
